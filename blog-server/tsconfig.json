@@ -26,7 +26,10 @@
       "@providers/*": ["src/providers/*"],
       "@logger/*": ["src/logger/*"],
       "@auth/*": ["src/modules/auth/*"],
-      "@users/*": ["src/modules/users/*"]
+      "@users/*": ["src/modules/users/*"],
+      "@roles/*": ["src/modules/roles/*"],
+      "@scopes/*": ["src/modules/scopes/*"],
+      "@role-scope/*": ["src/modules/role-scope/*"]
     }
   }
 }

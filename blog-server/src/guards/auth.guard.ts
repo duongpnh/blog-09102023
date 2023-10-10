@@ -1,7 +1,5 @@
-import { CanActivate, ExecutionContext, Injectable, NotFoundException, UnauthorizedException } from '@nestjs/common';
+import { CanActivate, ExecutionContext, ForbiddenException, Injectable } from '@nestjs/common';
 import { Reflector } from '@nestjs/core';
-import * as jwt from 'jsonwebtoken';
-import { JwtPayload, VerifyErrors } from 'jsonwebtoken';
 import { GqlContextType, GqlExecutionContext } from '@nestjs/graphql';
 import { ContextService } from '@providers/context.service';
 import { ContextType } from '@common/enums/context-type.enum';
@@ -81,32 +79,31 @@ export class AuthGuard implements CanActivate {
 
     const { jwtConfig } = this._configService;
 
-    jwt.verify(token, jwtConfig.key, { algorithms: ['RS256'] }, (err: VerifyErrors, decodedToken: JwtPayload) => {
-      if (err) throw new UnauthorizedException(ERROR[ErrorCode.TOKEN_EXPIRES]);
-      return decodedToken;
-    });
+    try {
+      const res = await this._jwtService.verify(token, { secret: jwtConfig.key });
 
-    // const decodeToken: any = this._jwtService.decode(token, { complete: true });
+      // Check user already exist on cognito
+      const user = await this._userRepo.findOne({
+        where: { email: res?.email },
+        relations: ['role', 'role.roleScopes', 'role.roleScopes.scope'],
+      });
 
-    // Check user already exist on cognito
-    // const user = await this._userRepo.findOne({
-    //   where: { id: decodeToken?.id },
-    //   relations: ['role', 'role.roleScopes', 'role.roleScopes.scope'],
-    // });
+      if (!user) {
+        throw new ForbiddenException(ERROR[ErrorCode.FORBIDDEN_RESOURCE]);
+      }
 
-    // if (!user) {
-    //   throw new NotFoundException(ERROR[ErrorCode.INVALID_CREDENTIALS]);
-    // }
+      const { role } = user;
+      const { roleScopes } = role;
 
-    // const { role } = user;
-    // const { roleScopes } = role;
+      const scopes = (roleScopes || []).map(({ scope }) => {
+        return scope;
+      });
 
-    // const scopes = (roleScopes || []).map(({ scope }) => {
-    //   return scope;
-    // });
+      ContextService.setScopePermissions(scopes);
 
-    // ContextService.setScopePermissions(scopes);
-
-    return true;
+      return true;
+    } catch (e) {
+      return false;
+    }
   }
 }

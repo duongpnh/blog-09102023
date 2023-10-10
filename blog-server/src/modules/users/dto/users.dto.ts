@@ -1,4 +1,4 @@
-import { Field, ObjectType } from '@nestjs/graphql';
+import { Field, Int, ObjectType } from '@nestjs/graphql';
 import { EmailAddressResolver, UUIDResolver } from 'graphql-scalars';
 import { AbstractDto } from '@common/dto/abstract.dto';
 
@@ -21,4 +21,7 @@ export class UserDto extends AbstractDto {
 
   @Field(() => String)
   salt: string;
+
+  @Field(() => Int, { nullable: true })
+  roleId?: number;
 }

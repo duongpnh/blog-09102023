@@ -2,6 +2,62 @@
 # THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
 # ------------------------------------------------------
 
+type ScopeEntity {
+  createdAt: Timestamp!
+  updatedAt: Timestamp!
+  deletedAt: Timestamp
+  id: Int!
+  name: String!
+  description: String
+  action: ActionEnum
+  entity: EntityEnum
+  roleIdApplied: Int
+}
+
+"""
+The javascript `Date` as integer. Type represents date and time as number of milliseconds from start of UNIX epoch.
+"""
+scalar Timestamp
+
+enum ActionEnum {
+  READ
+  CREATE
+  UPDATE
+  DELETE
+  RESTORE
+  LOGIN
+  REGISTER
+}
+
+"""Entities set permissions"""
+enum EntityEnum {
+  AUTH
+
+  """Users resource"""
+  USERS
+
+  """Roles resource"""
+  ROLES
+}
+
+type RoleScopeEntity {
+  createdAt: Timestamp!
+  updatedAt: Timestamp!
+  deletedAt: Timestamp
+  roleId: String!
+  scopeId: String!
+  scope: ScopeEntity!
+}
+
+type RoleEntity {
+  createdAt: Timestamp!
+  updatedAt: Timestamp!
+  deletedAt: Timestamp
+  id: Int!
+  name: String
+  roleScopes: [RoleScopeEntity!]
+}
+
 type UserDto {
   createdAt: DateTime!
   updatedAt: DateTime!
@@ -12,6 +68,7 @@ type UserDto {
   lastName: String!
   hash: String!
   salt: String!
+  roleId: Int
 }
 
 """
@@ -46,6 +103,8 @@ type Mutation {
   createUser(payload: CreateUserDto!): Int!
   register(payload: RegisterDto!): RegisterResponseDto!
   login(payload: LoginDto!): RegisterResponseDto!
+  createScope(payload: CreateScopeDto!): Int!
+  createRole(payload: CreateRoleDto!): Int!
 }
 
 input CreateUserDto {
@@ -66,4 +125,17 @@ input RegisterDto {
 input LoginDto {
   email: EmailAddress!
   password: String!
+}
+
+input CreateScopeDto {
+  name: String!
+  action: ActionEnum!
+  entity: EntityEnum!
+  description: String
+  roleIdApplied: Int
+}
+
+input CreateRoleDto {
+  name: String!
+  permissions: [Int!]!
 }

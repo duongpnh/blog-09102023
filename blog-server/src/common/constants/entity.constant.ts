@@ -1,15 +1,19 @@
 import { registerEnumType } from '@nestjs/graphql';
-import { ActionEnum } from '@common/enums/scope.enum';
+import { ActionEnum } from '@scopes/enums/action.enum';
 import { EnumMetadataValuesMapOptions } from '@nestjs/graphql/dist/schema-builder/metadata';
 
 export enum EntityEnum {
   AUTH = 'AUTH',
   USERS = 'USERS',
+  ROLES = 'ROLES',
 }
 
 export const MAPPING_ENTITY_DESCRIPTION: Partial<Record<EntityEnum, EnumMetadataValuesMapOptions>> = {
   [EntityEnum.USERS]: {
     description: 'Users resource',
+  },
+  [EntityEnum.ROLES]: {
+    description: 'Roles resource',
   },
 };
 
@@ -25,7 +29,7 @@ export interface IRouteInfo {
 }
 
 export const MAPPING_GQL_OPS_TO_ENTITY_ACTION: Record<string, IRouteInfo> = {
-  users: {
+  getUsers: {
     entity: EntityEnum.USERS,
     action: ActionEnum.READ,
   },

@@ -28,4 +28,17 @@ export const ERROR: Record<ErrorCode, ICustomError> = {
     statusCode: HttpStatus.NOT_FOUND,
     serverErrorCode: ErrorCode.TOKEN_EXPIRES,
   },
+  // ROLE ERROR
+  [ErrorCode.ROLE_EXISTED]: {
+    message: 'Role has already existed',
+    description: 'Role has already existed',
+    statusCode: HttpStatus.CONFLICT,
+    serverErrorCode: ErrorCode.ROLE_EXISTED,
+  },
+  [ErrorCode.SCOPE_EXISTED]: {
+    message: 'Scope has already existed',
+    description: 'Scope has already existed',
+    statusCode: HttpStatus.CONFLICT,
+    serverErrorCode: ErrorCode.SCOPE_EXISTED,
+  },
 };

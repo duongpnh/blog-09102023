@@ -13,6 +13,9 @@ import { LoggerMiddleware } from './middleware/logger.middleware';
 import { UsersModule } from './modules/users/users.module';
 import { SharedModule } from './shared/shared.module';
 import { AuthModule } from './modules/auth/auth.module';
+import { ScopesModule } from './modules/scopes/scopes.module';
+import { RoleScopeModule } from './modules/role-scope/role-scope.module';
+import { RolesModule } from './modules/roles/roles.module';
 import dataSource from '@config/datasource.config';
 
 @Module({
@@ -49,6 +52,9 @@ import dataSource from '@config/datasource.config';
     }),
     UsersModule,
     AuthModule,
+    ScopesModule,
+    RoleScopeModule,
+    RolesModule,
   ],
   controllers: [AppController],
   providers: [AppService, GeneralLogger, ConfigService],

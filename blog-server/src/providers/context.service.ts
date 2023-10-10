@@ -1,5 +1,5 @@
 import * as requestContext from 'request-context';
-// import { ScopeEntity } from 'src/modules/auth/scope/scope.entity';
+import { ScopeEntity } from '@scopes/scopes.entity';
 
 export interface IRequestInfo {
   ipAddress: string;
@@ -35,13 +35,13 @@ export class ContextService {
     return ContextService.get('roleContext');
   }
 
-  // static setScopePermissions(scopes: ScopeEntity[]): void {
-  //   ContextService.set(this._scopePermissions, scopes);
-  // }
+  static setScopePermissions(scopes: ScopeEntity[]): void {
+    ContextService.set(this._scopePermissions, scopes);
+  }
 
-  // static getScopePermissions(): any {
-  //   return ContextService.get(this._scopePermissions);
-  // }
+  static getScopePermissions(): any {
+    return ContextService.get(this._scopePermissions);
+  }
 
   static setRequestInfo(info: IRequestInfo): void {
     ContextService.set('requestInfo', info);
