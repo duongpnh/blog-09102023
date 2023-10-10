@@ -19,7 +19,7 @@ export const ERROR: Record<ErrorCode, ICustomError> = {
   [ErrorCode.INVALID_CREDENTIALS]: {
     message: 'Your email or password is incorrect',
     description: 'Your email or password is incorrect',
-    statusCode: HttpStatus.NOT_FOUND,
+    statusCode: HttpStatus.UNAUTHORIZED,
     serverErrorCode: ErrorCode.INVALID_CREDENTIALS,
   },
   [ErrorCode.TOKEN_EXPIRES]: {

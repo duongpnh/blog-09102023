@@ -1,4 +1,4 @@
-import { BadRequestException, ForbiddenException, Injectable } from '@nestjs/common';
+import { BadRequestException, ForbiddenException, Injectable, UnauthorizedException } from '@nestjs/common';
 import { InjectDataSource } from '@nestjs/typeorm';
 import { JwtService } from '@nestjs/jwt';
 import { DataSource } from 'typeorm';
@@ -79,10 +79,9 @@ export class AuthService {
 
     try {
       const match = await comparePassword(password, user.salt, user.hash);
-      console.log("🚀 ~ file: auth.service.ts:82 ~ AuthService ~ login ~ match:", match)
 
       if (!match) {
-        throw new ForbiddenException(ERROR[ErrorCode.FORBIDDEN_RESOURCE]);
+        throw new UnauthorizedException(ERROR[ErrorCode.INVALID_CREDENTIALS]);
       }
 
       const accessToken = await this._jwtService.signAsync(payload);

@@ -27,7 +27,7 @@ const standardizeStatusCode = (exception: any): [HttpStatus, HttpStatus, ErrorCo
 
 @Catch(HttpException)
 export class RequestExceptionFilter implements GqlExceptionFilter {
-  constructor(public reflector: Reflector, private _generalLogger: GeneralLogger) { }
+  constructor(public reflector: Reflector, private _generalLogger: GeneralLogger) {}
 
   async catch(exception: any, host: ArgumentsHost) {
     // const gqlHost = GqlArgumentsHost.create(host);

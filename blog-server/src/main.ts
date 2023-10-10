@@ -1,10 +1,11 @@
-import { NestFactory } from '@nestjs/core';
+import { NestFactory, Reflector } from '@nestjs/core';
 import helmet from 'helmet';
 import * as compression from 'compression';
 
 import { AppModule } from './app.module';
 import { GeneralLogger } from './logger/general.logger';
 import { setupSwagger } from '@config/swagger.config';
+import { RequestExceptionFilter } from '@exceptions/request.exception';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
@@ -30,6 +31,11 @@ async function bootstrap() {
   );
   // setup swagger
   setupSwagger(app);
+
+  // add filter exception
+  const reflector = app.get(Reflector);
+  const logger = app.get(GeneralLogger);
+  app.useGlobalFilters(new RequestExceptionFilter(reflector, logger));
 
   const { PORT } = process.env;
 
