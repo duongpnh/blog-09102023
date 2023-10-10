@@ -1,4 +1,4 @@
-import { Catch, ArgumentsHost, HttpStatus, HttpException } from '@nestjs/common';
+import { Catch, ArgumentsHost, HttpStatus, HttpException, BadRequestException } from '@nestjs/common';
 import { Reflector } from '@nestjs/core';
 import { GqlExceptionFilter } from '@nestjs/graphql';
 import { ValidationError } from 'class-validator';
@@ -6,6 +6,7 @@ import { STATUS_CODES } from 'http';
 import { isArray, snakeCase, isEmpty } from 'lodash';
 import { ErrorCode } from 'src/common/enums/error-code.enum';
 import { GeneralLogger } from '@logger/general.logger';
+import { ERROR } from '@common/constants/errors.constant';
 
 const standardizeStatusCode = (exception: any): [HttpStatus, HttpStatus, ErrorCode, string] => {
   let ex = exception;
@@ -18,8 +19,8 @@ const standardizeStatusCode = (exception: any): [HttpStatus, HttpStatus, ErrorCo
   const { response, ...restOfException } = errorRes;
 
   const statusCode = response?.statusCode || restOfException?.statusCode;
-  const { code, appErrorCode } = restOfException;
-  const appCode = response?.appErrorCode || appErrorCode;
+  const { code, serverErrorCode } = restOfException;
+  const appCode = response?.serverErrorCode || serverErrorCode;
   const description = response?.description || restOfException?.description;
 
   return [statusCode, code, appCode, description];
@@ -32,6 +33,10 @@ export class RequestExceptionFilter implements GqlExceptionFilter {
   async catch(exception: any, host: ArgumentsHost) {
     // const gqlHost = GqlArgumentsHost.create(host);
     const res = exception.getResponse();
+
+    if (typeof res === 'string' && res.includes('ThrottlerException')) {
+      throw new BadRequestException(ERROR[ErrorCode.TOO_MANY_REQUESTS]);
+    }
 
     const { response: _, ...r } = res;
 

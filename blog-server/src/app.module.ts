@@ -17,6 +17,9 @@ import { ScopesModule } from './modules/scopes/scopes.module';
 import { RoleScopeModule } from './modules/role-scope/role-scope.module';
 import { RolesModule } from './modules/roles/roles.module';
 import dataSource from '@config/datasource.config';
+import { ThrottlerModule } from '@nestjs/throttler';
+import { APP_GUARD } from '@nestjs/core';
+import { GqlThrottlerGuard } from './guards/thottle.guard';
 
 @Module({
   imports: [
@@ -50,6 +53,23 @@ import dataSource from '@config/datasource.config';
       inject: [ConfigService],
       useFactory: (configService: ConfigService) => configService.graphQLConfig,
     }),
+    ThrottlerModule.forRoot([
+      {
+        name: 'short',
+        ttl: 1000,
+        limit: 3,
+      },
+      {
+        name: 'medium',
+        ttl: 10000,
+        limit: 20,
+      },
+      {
+        name: 'long',
+        ttl: 60000,
+        limit: 100,
+      },
+    ]),
     UsersModule,
     AuthModule,
     ScopesModule,
@@ -57,7 +77,15 @@ import dataSource from '@config/datasource.config';
     RolesModule,
   ],
   controllers: [AppController],
-  providers: [AppService, GeneralLogger, ConfigService],
+  providers: [
+    AppService,
+    GeneralLogger,
+    ConfigService,
+    {
+      provide: APP_GUARD,
+      useClass: GqlThrottlerGuard,
+    },
+  ],
 })
 export class AppModule implements NestModule {
   configure(consumer: MiddlewareConsumer) {

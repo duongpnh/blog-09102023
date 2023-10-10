@@ -28,6 +28,12 @@ export const ERROR: Record<ErrorCode, ICustomError> = {
     statusCode: HttpStatus.NOT_FOUND,
     serverErrorCode: ErrorCode.TOKEN_EXPIRES,
   },
+  [ErrorCode.TOO_MANY_REQUESTS]: {
+    message: 'Too many requests, try again later',
+    description: 'Too many requests, try again later',
+    statusCode: HttpStatus.TOO_MANY_REQUESTS,
+    serverErrorCode: ErrorCode.TOO_MANY_REQUESTS,
+  },
   // ROLE ERROR
   [ErrorCode.ROLE_EXISTED]: {
     message: 'Role has already existed',
