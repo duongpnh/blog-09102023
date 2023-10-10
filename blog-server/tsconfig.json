@@ -24,6 +24,7 @@
       "@middleware/*": ["src/middleware/*"],
       "@strategies/*": ["src/strategies/*"],
       "@providers/*": ["src/providers/*"],
+      "@decorators/*": ["src/decorators/*"],
       "@logger/*": ["src/logger/*"],
       "@auth/*": ["src/modules/auth/*"],
       "@users/*": ["src/modules/users/*"],

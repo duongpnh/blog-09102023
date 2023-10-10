@@ -1,4 +1,4 @@
-import { Field, ObjectType } from '@nestjs/graphql';
+import { Field, Int, ObjectType } from '@nestjs/graphql';
 import { Entity, ManyToOne, PrimaryColumn, JoinColumn } from 'typeorm';
 import { AbstractEntity } from '@common/entities/abstract.entity';
 import { RoleScopeDto } from './dto/role-scope.dto';
@@ -9,11 +9,11 @@ import { ScopeEntity } from '@scopes/scopes.entity';
 @ObjectType()
 export class RoleScopeEntity extends AbstractEntity<RoleScopeDto> {
   @PrimaryColumn({ type: 'int4' })
-  @Field(() => String)
+  @Field(() => Int)
   roleId: number;
 
   @PrimaryColumn({ type: 'int4' })
-  @Field(() => String)
+  @Field(() => Int)
   scopeId: number;
 
   @ManyToOne(() => ScopeEntity, (scope) => scope.roleScopes)

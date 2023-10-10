@@ -41,10 +41,18 @@ export const ERROR: Record<ErrorCode, ICustomError> = {
     statusCode: HttpStatus.CONFLICT,
     serverErrorCode: ErrorCode.ROLE_EXISTED,
   },
+  // SCOPE ERROR
   [ErrorCode.SCOPE_EXISTED]: {
     message: 'Scope has already existed',
     description: 'Scope has already existed',
     statusCode: HttpStatus.CONFLICT,
     serverErrorCode: ErrorCode.SCOPE_EXISTED,
+  },
+  // CATEGORY ERROR
+  [ErrorCode.CATEGORY_EXISTED]: {
+    message: 'Category has already existed',
+    description: 'Category has already existed',
+    statusCode: HttpStatus.CONFLICT,
+    serverErrorCode: ErrorCode.CATEGORY_EXISTED,
   },
 };

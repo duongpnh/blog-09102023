@@ -20,6 +20,7 @@ import dataSource from '@config/datasource.config';
 import { ThrottlerModule } from '@nestjs/throttler';
 import { APP_GUARD } from '@nestjs/core';
 import { GqlThrottlerGuard } from './guards/thottle.guard';
+import { CategoryModule } from './modules/categories/categories.module';
 
 @Module({
   imports: [
@@ -75,6 +76,7 @@ import { GqlThrottlerGuard } from './guards/thottle.guard';
     ScopesModule,
     RoleScopeModule,
     RolesModule,
+    CategoryModule,
   ],
   controllers: [AppController],
   providers: [

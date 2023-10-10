@@ -6,6 +6,7 @@ export enum EntityEnum {
   AUTH = 'AUTH',
   USERS = 'USERS',
   ROLES = 'ROLES',
+  CATEGORIES = 'CATEGORIES',
 }
 
 export const MAPPING_ENTITY_DESCRIPTION: Partial<Record<EntityEnum, EnumMetadataValuesMapOptions>> = {
@@ -14,6 +15,9 @@ export const MAPPING_ENTITY_DESCRIPTION: Partial<Record<EntityEnum, EnumMetadata
   },
   [EntityEnum.ROLES]: {
     description: 'Roles resource',
+  },
+  [EntityEnum.CATEGORIES]: {
+    description: 'Categories resource',
   },
 };
 
@@ -36,6 +40,10 @@ export const MAPPING_GQL_OPS_TO_ENTITY_ACTION: Record<string, IRouteInfo> = {
   updateUser: {
     entity: EntityEnum.USERS,
     action: ActionEnum.UPDATE,
+  },
+  createCategory: {
+    entity: EntityEnum.CATEGORIES,
+    action: ActionEnum.CREATE,
   },
 };
 
